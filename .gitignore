@@ -2,3 +2,6 @@ vendor
 .vscode
 *.bin
 .DS_Store
+3.jpg
+__debug_bin
+*.txt
