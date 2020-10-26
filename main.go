@@ -25,6 +25,9 @@ func main() {
 	client.SetVariable("tessedit_char_whitelist", "0123456789")
 	// exclude fragments that do not look like whole characters from training and adaption
 	client.SetVariable("classify_character_fragments_garbage_certainty_threshold", "1")
+        // removing dict to increase recognition 
+        client.SetVariable("load_system_dawg", 0)
+        client.SetVariable("load_freq_dawg", 0)
 
 	text, err := client.Text()
 	if err != nil {
