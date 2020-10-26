@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"strings"
+	"unicode"
 
 	"github.com/otiai10/gosseract/v2"
 )
@@ -16,8 +18,7 @@ func main() {
 	client.SetImage("./files/2.jpg")
 
 	// tesseract parameters:
-	// http: //www.sk-spell.sk.cx/tesseract-ocr-parameters-in-302-version
-
+	//     http: //www.sk-spell.sk.cx/tesseract-ocr-parameters-in-302-version
 	// auto page segmentation mode
 	client.SetVariable("tessedit_pageseg_mode", "3")
 	// allow only numerics
@@ -38,5 +39,7 @@ func main() {
 	fmt.Println(client.GetBoundingBoxesVerbose())
 
 	// output
-	fmt.Println(text)
+	fmt.Println(strings.TrimFunc(text, func(r rune) bool {
+		return unicode.IsSpace(r)
+	}))
 }
