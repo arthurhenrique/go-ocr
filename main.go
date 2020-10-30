@@ -1,48 +1,27 @@
 package main
 
-import (
-	"fmt"
-	"strings"
-	"unicode"
-
-	"github.com/otiai10/gosseract/v2"
-)
+import "fmt"
 
 func main() {
-	client := gosseract.NewClient()
-	defer client.Close()
 
-	// configurations
-	client.SetConfigFile("./config/test")
-	client.SetLanguage("por+eng")
-	client.SetImage("./files/2.jpg")
+	tm := TextMethod{
+		Name:     "tesseract",
+		Language: "por+eng",
+		Variables: map[string]string{
+			"tessedit_pageseg_mode": "3", // auto page segmentation mode
+			"load_system_dawg":      "0", // removing dict to increase recognition
+			"load_freq_dawg":        "0",
+		},
+	}
 
-	// tesseract parameters:
-	//     http: //www.sk-spell.sk.cx/tesseract-ocr-parameters-in-302-version
-	// auto page segmentation mode
-	client.SetVariable("tessedit_pageseg_mode", "3")
-	// allow only numerics
-	client.SetVariable("tessedit_char_whitelist", "0123456789")
-	// exclude fragments that do not look like whole characters from training and adaption
-	client.SetVariable("classify_character_fragments_garbage_certainty_threshold", "1")
-        // removing dict to increase recognition 
-        client.SetVariable("load_system_dawg", "0")
-        client.SetVariable("load_freq_dawg", "0")
+	bytesImage := convertToBytes("files/2.jpg")
 
-	text, err := client.Text()
+	object, err := tm.extract(bytesImage)
 	if err != nil {
-		fmt.Printf("error %s\n", err)
 		return
 	}
 
-	// tesseract version
-	fmt.Println(client.Version())
-
-	// all bounding boxes
-	fmt.Println(client.GetBoundingBoxesVerbose())
-
-	// output
-	fmt.Println(strings.TrimFunc(text, func(r rune) bool {
-		return unicode.IsSpace(r)
-	}))
+	if object != nil {
+		fmt.Print(*object)
+	}
 }
