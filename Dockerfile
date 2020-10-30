@@ -2,6 +2,10 @@ FROM golang:1.15.3-alpine3.12
 RUN apk add --update --no-cache --virtual wget-dependencies \
     ca-certificates \
     openssl \
+    make \
+    gcc \
+    g++ \
+    libc-dev \
     tesseract-ocr \
     tesseract-ocr-dev \
     leptonica-dev && \
