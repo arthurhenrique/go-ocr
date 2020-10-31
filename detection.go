@@ -2,11 +2,16 @@ package main
 
 import (
 	"strings"
+	"sync"
 	"unicode"
 
 	"github.com/otiai10/gosseract/v2"
 )
 
+var once sync.Once
+var instance *gosseract.Client
+
+// TextMethod contains configuration of tesseract client
 type TextMethod struct {
 	Name      string
 	Language  string
@@ -14,18 +19,12 @@ type TextMethod struct {
 }
 
 func (tm TextMethod) extract(data []byte) (*string, error) {
-	client := gosseract.NewClient()
-	defer client.Close()
+	client := tm.Gosseract()
 
-	client.SetLanguage(tm.Language)
-
-	// tesseract parameters:
-	// http://www.sk-spell.sk.cx/tesseract-ocr-parameters-in-302-version
-	for k, v := range tm.Variables {
-		client.SetVariable(gosseract.SettableVariable(k), v)
+	err := client.SetImageFromBytes(data)
+	if err != nil {
+		return nil, err
 	}
-
-	client.SetImageFromBytes(data)
 
 	output, err := client.Text()
 	if len(strings.TrimSpace(output)) == 0 || err != nil {
@@ -37,4 +36,18 @@ func (tm TextMethod) extract(data []byte) (*string, error) {
 	})
 
 	return &result, nil
+}
+
+// Gosseract singleton implement
+func (tm TextMethod) Gosseract() *gosseract.Client {
+	once.Do(func() {
+		instance = gosseract.NewClient()
+		instance.SetLanguage(tm.Language)
+		// tesseract parameters:
+		// http://www.sk-spell.sk.cx/tesseract-ocr-parameters-in-302-version
+		for k, v := range tm.Variables {
+			instance.SetVariable(gosseract.SettableVariable(k), v)
+		}
+	})
+	return instance
 }

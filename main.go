@@ -14,8 +14,7 @@ func main() {
 		},
 	}
 
-	bytesImage := convertToBytes("files/2.jpg")
-
+	bytesImage := convertToBytes("files/4.jpg")
 	object, err := tm.extract(bytesImage)
 	if err != nil {
 		return
