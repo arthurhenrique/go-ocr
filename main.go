@@ -8,6 +8,8 @@ import (
 
 func main() {
 
+	fileName := "files/2.jpg"
+
 	instance = gosseract.NewClient()
 
 	tm := TextMethod{
@@ -21,9 +23,11 @@ func main() {
 		Client: instance,
 	}
 	defer instance.Close()
+
+	// Handler tesseract's settings
 	tm.tesseractSettings()
 
-	bytesImage := convertToBytes("files/2.jpg")
+	bytesImage := convertToBytes(fileName)
 	object, err := tm.extract(bytesImage)
 	if err != nil {
 		return

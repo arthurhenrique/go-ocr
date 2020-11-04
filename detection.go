@@ -39,13 +39,12 @@ func (tm TextMethod) extract(data []byte) (*string, error) {
 }
 
 func (tm TextMethod) tesseractSettings() {
-
-	instance.SetLanguage(tm.Language)
+	tm.Client.SetLanguage(tm.Language)
 
 	// tesseract parameters:
 	// http://www.sk-spell.sk.cx/tesseract-ocr-parameters-in-302-version
 	for k, v := range tm.Variables {
-		instance.SetVariable(gosseract.SettableVariable(k), v)
+		tm.Client.SetVariable(gosseract.SettableVariable(k), v)
 	}
 
 }
