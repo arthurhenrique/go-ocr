@@ -1,8 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/otiai10/gosseract/v2"
+)
 
 func main() {
+
+	instance = gosseract.NewClient()
 
 	tm := TextMethod{
 		Name:     "tesseract",
@@ -12,9 +18,12 @@ func main() {
 			"load_system_dawg":      "0", // removing dict to increase recognition
 			"load_freq_dawg":        "0",
 		},
+		Client: instance,
 	}
+	defer instance.Close()
+	tm.tesseractSettings()
 
-	bytesImage := convertToBytes("files/4.jpg")
+	bytesImage := convertToBytes("files/2.jpg")
 	object, err := tm.extract(bytesImage)
 	if err != nil {
 		return

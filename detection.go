@@ -16,17 +16,17 @@ type TextMethod struct {
 	Name      string
 	Language  string
 	Variables map[string]string
+	Client    *gosseract.Client
 }
 
 func (tm TextMethod) extract(data []byte) (*string, error) {
-	client := tm.Gosseract()
 
-	err := client.SetImageFromBytes(data)
+	err := tm.Client.SetImageFromBytes(data)
 	if err != nil {
 		return nil, err
 	}
 
-	output, err := client.Text()
+	output, err := tm.Client.Text()
 	if len(strings.TrimSpace(output)) == 0 || err != nil {
 		return nil, err
 	}
@@ -38,16 +38,14 @@ func (tm TextMethod) extract(data []byte) (*string, error) {
 	return &result, nil
 }
 
-// Gosseract singleton implement
-func (tm TextMethod) Gosseract() *gosseract.Client {
-	once.Do(func() {
-		instance = gosseract.NewClient()
-		instance.SetLanguage(tm.Language)
-		// tesseract parameters:
-		// http://www.sk-spell.sk.cx/tesseract-ocr-parameters-in-302-version
-		for k, v := range tm.Variables {
-			instance.SetVariable(gosseract.SettableVariable(k), v)
-		}
-	})
-	return instance
+func (tm TextMethod) tesseractSettings() {
+
+	instance.SetLanguage(tm.Language)
+
+	// tesseract parameters:
+	// http://www.sk-spell.sk.cx/tesseract-ocr-parameters-in-302-version
+	for k, v := range tm.Variables {
+		instance.SetVariable(gosseract.SettableVariable(k), v)
+	}
+
 }
