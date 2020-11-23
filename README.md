@@ -4,7 +4,7 @@ POC to test lib tesseract with portuguese and english language.
 
 ## Notes
 
-This works properly using images with 300 dpi >= x >= 600 dpi.
+This works properly using images with 300 dpi <= x <= 600 dpi.
 
 ## Install
 
