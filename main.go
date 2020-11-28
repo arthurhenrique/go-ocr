@@ -17,11 +17,13 @@ func main() {
 
 		fileName := "files/bode.jpg"
 
+		// fast model
+		// https://github.com/tesseract-ocr/tessdata_fast/raw/master/por.tra
 		instance = gosseract.NewClient()
 
 		tm := TextMethod{
 			Name:     "tesseract",
-			Language: "eng",
+			Language: "por+eng",
 			Variables: map[string]string{
 				"tessedit_pageseg_mode": "3", // auto page segmentation mode
 				"load_system_dawg":      "0", // removing dict to increase recognition
