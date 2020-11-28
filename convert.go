@@ -2,14 +2,11 @@ package main
 
 import (
 	"bufio"
-	"bytes"
 	"fmt"
-	"image"
-	"image/color"
-	"image/jpeg"
 	"os"
 )
 
+// convertToBytes return bytes
 func convertToBytes(fileName string) []byte {
 	file, err := os.Open(fileName)
 	if err != nil {
