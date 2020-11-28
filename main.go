@@ -20,12 +20,10 @@ func main() {
 		instance = gosseract.NewClient()
 
 		tm := TextMethod{
-			Name:     "tesseract",
-			Language: "por+eng",
-			Variables: map[string]string{
-				"tessedit_pageseg_mode": "3", // auto page segmentation mode
-			},
-			Client: instance,
+			Name:      "tesseract",
+			Language:  "por+eng",
+			Variables: map[string]string{},
+			Client:    instance,
 		}
 		defer instance.Close()
 
