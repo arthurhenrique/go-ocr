@@ -2,13 +2,11 @@ package main
 
 import (
 	"strings"
-	"sync"
 	"unicode"
 
 	"github.com/otiai10/gosseract/v2"
 )
 
-var once sync.Once
 var instance *gosseract.Client
 
 // TextMethod contains configuration of tesseract client
