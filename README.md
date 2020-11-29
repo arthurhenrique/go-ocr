@@ -4,6 +4,7 @@ POC to test lib tesseract with portuguese and english language.
 
 edit: now just portuguese for performance:
 [test perf](https://github.com/arthurhenrique/go-ocr/pull/1)
+[test perf 2](https://github.com/arthurhenrique/go-ocr/pull/2)
 
 ## Notes
 
