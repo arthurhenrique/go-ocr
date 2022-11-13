@@ -1,6 +1,6 @@
 module tesseract
 
-go 1.15
+go 1.19
 
 require (
 	github.com/otiai10/gosseract v2.2.1+incompatible // indirect
